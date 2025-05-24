@@ -20,6 +20,12 @@ This lab is about making your AWS infrastructure more reliable and scalable usin
 
 ## 🧱 Task 1: Create an AMI for Auto Scaling
 
+**What I did:**  
+Created an Amazon Machine Image (AMI) from a manually configured EC2 instance (`Web Server 1`).
+
+**Why I did it:**  
+To save a snapshot of a working web server setup so that Auto Scaling can later launch **identical copies** of this instance automatically. This avoids reconfiguring new instances from scratch.
+
 We'll create an AMI from the existing **Web Server 1** instance. This ensures every new instance launched by Auto Scaling is pre-configured with the same OS, web server, and app files.
 
 ### 🔹 Steps:
@@ -38,6 +44,13 @@ We'll create an AMI from the existing **Web Server 1** instance. This ensures ev
 You'll use this AMI to launch instances in your Auto Scaling group later.
 
 ## 🌐 Task 2: Create a Load Balancer
+
+**What I did:**  
+Created a **Target Group** (`LabGroup`) and an **Application Load Balancer** (`LabELB`).
+
+**Why I did it:**  
+- The **Target Group** acts as a container that holds the EC2 instances to receive traffic.
+- The **Load Balancer** automatically distributes incoming requests across the healthy instances in the target group to ensure high availability and even load distribution.
 
 In this task, I set up a **Target Group** and an **Application Load Balancer (ALB)** to balance traffic across EC2 instances in multiple Availability Zones.
 
@@ -69,6 +82,14 @@ In this task, I set up a **Target Group** and an **Application Load Balancer (AL
 ![created lb](https://github.com/user-attachments/assets/33ceb466-c9ec-4f57-aa3e-09033b144b63)
 
 ## ⚙️ Task 3: Create Launch Template & Auto Scaling Group
+
+**What I did:**  
+Created a **Launch Template** (`LabConfig`) and an **Auto Scaling Group** (`Lab Auto Scaling Group`) based on that template.
+
+**Why I did it:**  
+- The **Launch Template** defines how new EC2 instances should be created (AMI, instance type, key pair, security group).
+- The **Auto Scaling Group** ensures the system maintains a desired number of running instances and automatically **scales up or down** based on load (e.g., CPU usage).
+- This step enables **automated resilience and cost-efficiency**.
 
 ### 🔸 Launch Template (`LabConfig`)
 
@@ -126,6 +147,15 @@ An Auto Scaling Group launches EC2s based on the template and manages scaling.
 
 ## 🌐 Task 4: Verify Load Balancing is Working
 
+**What I did:**  
+Checked that the new EC2 instances were registered as healthy targets in the **Target Group**, and tested the **Load Balancer DNS** in a browser.
+
+**Why I did it:**  
+To confirm that:
+- The Load Balancer is successfully routing traffic to healthy instances.
+- Auto Scaling has launched the correct number of instances.
+- The web application is reachable, meaning the full pipeline (AMI → Launch → Scale → Balance) is working.
+
 ### ✅ Check EC2 Instances
 
 1. Go to **EC2 → Instances**
@@ -156,6 +186,15 @@ An Auto Scaling Group launches EC2s based on the template and manages scaling.
 ➡️ If your application loads, **load balancing is working!**
 
 ## ✅ Final Check: Running EC2 Instances
+
+**What I did:**  
+Viewed all EC2 instances in the AWS console, confirmed multiple `Lab Instance` EC2s were running along with `Web Server 1`.
+
+**Why I did it:**  
+To validate that:
+- Auto Scaling successfully launched new instances.
+- Instances passed health checks.
+- The environment reflects high availability by spanning multiple Availability Zones.
 
 At the end of the lab, I verified that the EC2 instances launched by the Auto Scaling Group were active and healthy.
 
